@@ -176,10 +176,16 @@ def overall_volume(wdict, wobj):
     average_volume=sum(avg_list)/len(avg_list)
     delta_volume=average_volume-overall_silence
 
-    if delta_volume>1.0:
-        grade=1/delta_volume
-    elif delta_volume<0.5:
-        grade=delta_volume/0.5
+    if delta_volume>4.5:
+        grade=0.7
+    elif delta_volume>4.7:
+        grade=0.5
+    elif delta_volume > 5:
+        grade = 0.3
+    elif delta_volume<1.5:
+        grade=0.6
+    elif delta_volume<1.2:
+        grade=0.3
     else: 
         grade=1.0
     return round(grade,2)
@@ -190,10 +196,10 @@ def volume_message(wdict,wobj):
     overall_silence=wobj.silent_volume
     average_volume=sum(avg_list)/len(avg_list)
     delta_volume=average_volume-overall_silence
-    if delta_volume>1.0:
-        message="You are speaking too loudly! Try to speak more softly." 
-    elif delta_volume<0.05:
-        message="We can't hear you well. Don't be shy! Speak louder!"
+    if delta_volume>4.5 or delta_volume < 1.2:
+        message="The loudness of your voice is a little off." 
+    # elif delta_volume<1.2:
+    #     message="We can't hear you well. Don't be shy! Speak louder!"
     else: 
         message="The volume of your voice is perfect. Good job!" 
     return message
