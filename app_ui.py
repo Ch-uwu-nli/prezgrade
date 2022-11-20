@@ -58,7 +58,8 @@ ttk.Button(my_doc, text="Upload", command=upload_file).pack(pady=20)
 #The button allows the user to go to his file explorer to seek the file they wish to upload
 
 # Start Button
-ttk.Button(my_doc, text="Start", command=new_window).pack(pady=20) #def run_program
+ttk.Button(my_doc, text="Start", command=process_file).pack(pady=20) #def run_program
 
-
+label = Label(my_doc, text="User Guide:", font=('Georgia 15'))
+label = Label(my_doc, text="For better results, here are some suggestions for you to keep in mind before the recording. \nKeep a distance of 0.5 meters from the mic.\nLeave the first 3 seconds silent for calibration purposes.", font=('Georgia 15')).place(x=100, y=400)
 my_doc.mainloop()
