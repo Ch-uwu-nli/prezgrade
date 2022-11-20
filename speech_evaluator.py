@@ -24,6 +24,7 @@ def intonation_message(wdict):
         message="Your voice is too monotonous! Try to vary the volume of your voice a bit." 
     else:
         message="The intonation of your voice is perfect. Keep up the good work!"
+    return message
 
 
 def overall_volume(wdict, wobj):
@@ -39,7 +40,7 @@ def overall_volume(wdict, wobj):
         grade=delta_volume/0.5
     else: 
         grade=1.0
-    return grade
+    return round(grade,2)
 
 
 def volume_message(wdict,wobj):
@@ -53,6 +54,7 @@ def volume_message(wdict,wobj):
         message="We can't hear you well. Don't be shy! Speak louder!"
     else: 
         message="The volume of your voice is perfect. Good job!" 
+    return message
 
 def blanks_grade(wobj, wdict):
     length=wobj.duration/60
@@ -61,7 +63,7 @@ def blanks_grade(wobj, wdict):
     grade= 1-number_of_blanks/max_mistakes
     if number_of_blanks>max_mistakes:
         grade=0
-    return grade
+    return round(grade,2)
     
 
 

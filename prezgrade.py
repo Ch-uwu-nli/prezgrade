@@ -1,12 +1,18 @@
-# from speech_evaluator import *
 from audio_analysis import *
-from app_ui import *
 
 def evaluate_speech():
+    with open("path.txt", "r") as path_file:
+        path = path_file.read().strip()
     wave_object = WaveFile(path)
-    print(analyze_wave_file(wave_object))
+    wave_data = analyze_wave_file(wave_object)
 
+    score1 = intonation(wave_data)
+    score2 = overall_volume(wave_data, wave_object)
+    score3 = blanks_grade(wave_object, wave_data)
+    final_grade = total_grade(score1, score2, score3)
 
-if __name__ == "__main__":
-    load_UI(evaluate_speech)
-
+    intonation_review = intonation_message(wave_data)
+    volume_review = volume_message(wave_data, wave_object)
+    flow_review = blanks_comment(wave_data)
+    
+    return {"Grades": [score1, score2, score3, final_grade], "Intonation" : intonation_review, "Volume" : volume_review, "Tone" : flow_review}
