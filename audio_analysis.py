@@ -17,13 +17,11 @@ class WaveFile:
     def load(self, rate = 8000):
         self.wave, self.rate = librosa.load(self.path, rate)
         self.duration = int(librosa.get_duration(self.wave, self.rate))
-        print(self.wave)
 
     def split_wave_file(self):
         self.split_wave = []
-        points_per_split = (len(self.wave) / self.duration)
-        for i in range(int(len(self.wave) / self.duration)):
-            self.split_wave.append([i * points_per_split, (i + 1) * points_per_split])
+        for i in range(self.duration):
+            self.split_wave.append(self.wave[self.rate * i : (i + 1) * self.rate])
         
 
     def synthesize_wave(self):
@@ -74,7 +72,7 @@ def get_loudness(wave_object):
     for segment in reduced_waveform:
         sum_segment_loudness = 0
         for value in segment:
-            sum_segment_loudness += value
+            sum_segment_loudness += abs(value)
         
         loudness_list.append(sum_segment_loudness / len(segment))
 
@@ -89,17 +87,21 @@ if __name__ == "__main__":
     # librosa.display.waveshow(wave2, sr = 24400, ax = ax[0])
 
 
-    # test1 = WaveFile("New_Recording_102.wav", "Tests/New_Recording_102.wav")
+    test1 = WaveFile("New_Recording_102.wav", "Tests/New_Recording_102.wav")
     # wave1, sr1 = test1.load()
     # librosa.display.waveshow(wave1, sr = 8000, ax = ax[1])
         
     # plt.show()
 
-    test3 = WaveFile("New_Recording_104.wav", "Tests/New_Recording_104.wav")
-    print(analyze_wave_file(test3))
+    # test3 = WaveFile("New_Recording_104.wav", "Tests/New_Recording_104.wav")
+    print(analyze_wave_file(test1))
     # display_waveform(test3)
 
     # with open("Recording104.txt", "w") as file:
     #     test3.load
     #     for num in test3.wave:
     #         file.write(str(num) + " - ")
+
+    # test3.load()
+    # test3.split_wave_file()
+    # print(test3.split_wave)
