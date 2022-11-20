@@ -4,6 +4,11 @@ from tkinter.filedialog import askopenfile
 import os
 
 # Tkinter frame
+def new_window():
+   new_window = Tk()
+
+   my_doc.destroy()
+   
 my_doc = Tk()
 
 my_doc.title('PrezGrade')
@@ -25,6 +30,7 @@ label.pack(pady=10)
 ttk.Button(my_doc, text="Upload", command=upload_file).pack(pady=20)
 
 # Start Button
-ttk.Button(my_doc, text="Start", command=run_program).pack(pady=20) #def run_program
+ttk.Button(my_doc, text="Start", command=new_window).pack(pady=20) #def run_program
+
 
 my_doc.mainloop()
