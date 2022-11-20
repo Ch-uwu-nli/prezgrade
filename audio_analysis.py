@@ -4,8 +4,7 @@ import matplotlib.pyplot as plt
 
 class WaveFile:
     """"""
-    def __init__(self, name, path):
-        self.file_name = name
+    def __init__(self, path):
         self.path = path
         self.wave = []
         self.split_wave = []
@@ -32,8 +31,18 @@ class WaveFile:
                 sum_of_sublist += num
             synthesized_wave.append(sum_of_sublist / len(sublist))
         self.synthesized_wave = synthesized_wave
-        self.silent_volume = synthesized_wave[0]
+        try:
+            self.silent_volume = (abs(synthesized_wave[0]) + abs(synthesized_wave[1]) + abs(synthesized_wave[2])) * 100 / 3
+        except IndexError:
+            self.silent_volume = abs(synthesized_wave[0]) * 100
             
+
+class LowResWaveFile(WaveFile):
+    def load(self, rate = 500):
+        self.wave, self.rate = librosa.load(self.path, rate)
+        self.duration = int(librosa.get_duration(self.wave, self.rate))
+
+
 
 def analyze_wave_file(wave_object, display = False):
     """"""
@@ -41,7 +50,7 @@ def analyze_wave_file(wave_object, display = False):
     wave_object.load()
     wave_object.split_wave_file()
     wave_object.synthesize_wave()
-    # wave_data["blanks"] = find_blanks(wave_object)
+    wave_data["blanks"] = find_blanks(wave_object)
     wave_data["volume"] = get_loudness(wave_object)
     if display:
         display_waveform(wave_object)
@@ -57,7 +66,35 @@ def display_waveform(wave_object):
 
 def find_blanks(wave_object):
     """"""
+    downscaled_wave = LowResWaveFile(wave_object.path)
+    number_of_pauses = 0
+
+    downscaled_wave.load()
+    downscaled_wave.split_wave_file()
+    downscaled_wave.synthesize_wave()
     
+    new_pause = True
+    pause_frames = 0
+    uncertainty_counter = 250
+    for num in downscaled_wave.wave:
+        if new_pause and abs(num) <= downscaled_wave.silent_volume:
+            new_pause = False
+            pause_frames = 1
+        elif not new_pause and abs(num) <= downscaled_wave.silent_volume:
+            pause_frames += 1
+            if pause_frames == 500:
+                number_of_pauses += 1
+        elif not new_pause and abs(num) > downscaled_wave.silent_volume:
+            if uncertainty_counter != 0:
+                pause_frames += 1
+                uncertainty_counter -= 1
+            else:
+                new_pause = True
+                uncertainty_counter = 500
+                pause_frames = 0
+    return number_of_pauses
+    
+
 def get_loudness(wave_object):
     """"""
     reduced_waveform = []
@@ -79,22 +116,34 @@ def get_loudness(wave_object):
     return loudness_list
 
 
+
+
+
 if __name__ == "__main__":
     # fig, ax = plt.subplots(nrows=3, sharex=True)
 
     # test2 = WaveFile("New_Recording_102.wav", "Tests/New_Recording_102.wav")
-    # wave2, sr2 = test2.load(24400)
+    # test2.load(24400)
+    # wave2 = test2.wave
     # librosa.display.waveshow(wave2, sr = 24400, ax = ax[0])
 
 
-    test1 = WaveFile("New_Recording_102.wav", "Tests/New_Recording_102.wav")
-    # wave1, sr1 = test1.load()
+    # test1 = WaveFile("New_Recording_102.wav", "Tests/New_Recording_102.wav")
+    # test1.load()
+    # wave1 = test1.wave
     # librosa.display.waveshow(wave1, sr = 8000, ax = ax[1])
-        
+    # a=500
+
+    # test3 = WaveFile("New_Recording_102.wav", "Tests/New_Recording_102.wav")
+    # test3.load(a)
+    # wave3 = test3.wave
+    # librosa.display.waveshow(wave3, sr = a, ax = ax[2])
+
     # plt.show()
 
-    # test3 = WaveFile("New_Recording_104.wav", "Tests/New_Recording_104.wav")
-    print(analyze_wave_file(test1))
+
+    test3 = WaveFile("Tests/testv3.wav")
+    print(analyze_wave_file(test3))
     # display_waveform(test3)
 
     # with open("Recording104.txt", "w") as file:
