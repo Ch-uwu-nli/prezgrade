@@ -23,6 +23,6 @@ label.pack(pady=10)
 ttk.Button(my_doc, text="Upload", command=upload_file).pack(pady=20)
 
 # Start Button
-ttk.Button(my_doc, text="Start", command=run_program).pack(pady=20)
+ttk.Button(my_doc, text="Start", command=run_program).pack(pady=20) #def run_program
 
 my_doc.mainloop()
