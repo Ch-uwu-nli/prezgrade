@@ -52,8 +52,10 @@ def upload_file():
    if file:
       filepath = os.path.abspath(file.name)
       Label(my_doc, text="The File is located at : " + str(filepath), font=('Aerial 11')).pack()
+      #source used: https://www.tutorialspoint.com/how-to-get-the-absolute-path-of-a-file-using-tkfiledialog-tkinter#:~:text=If%20you%20want%20to%20access,in%20the%20window%20or%20screen
 
-#source used: https://www.tutorialspoint.com/how-to-get-the-absolute-path-of-a-file-using-tkfiledialog-tkinter#:~:text=If%20you%20want%20to%20access,in%20the%20window%20or%20screen
+      with open("path.txt", "w") as txt_file:
+         txt_file.write(filepath)
 
 # Upload Button
 ttk.Button(my_doc, text="Upload", command=upload_file).pack(pady=20) 
