@@ -19,7 +19,10 @@ def upload_file():
 label = Label(my_doc, text="Click the Button to browse the Files", font=('Georgia 13'))
 label.pack(pady=10)
 
-# Button
-ttk.Button(my_doc, text="Browse", command=upload_file).pack(pady=20)
+# Upload Button
+ttk.Button(my_doc, text="Upload", command=upload_file).pack(pady=20)
+
+# Start Button
+ttk.Button(my_doc, text="Start", command=run_program).pack(pady=20)
 
 my_doc.mainloop()
