@@ -1,5 +1,3 @@
-# prezgrade
-
 app_ui.py
 
 1. drop file button
@@ -16,6 +14,6 @@ spreech_evaluator.py
 
 
 USER TESTING GUIDE
-    1. Keep a distance from the mic (precise the distance)
+    1. Keep a distance from the mic (0.5 meters)
     2. Leave the first 3 seconds silent for calibration purposes (to be reformulate)
     3. 
