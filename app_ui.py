@@ -1,17 +1,25 @@
-import tkinter as tk
 from tkinter import *
+from tkinter import ttk, filedialog
 from tkinter.filedialog import askopenfile
+import os
 
-my_doc = tk.Tk()
-my_doc.geometry("1000x1000")
-my_doc.title('prezGrade')
+# Tkinter frame
+my_doc = Tk()
 
-doc_font1 = ('Roboto', 20, 'bold')
+# Frame Size
+my_doc.geometry("700x350")
 
-header1 = tk.Label(my_doc, text='Upload File & Read', width=25, font=doc_font1)
-header1.grid(row=1, column=1)
+def upload_file():
+   file = filedialog.askopenfile(mode='r', filetypes=[('Wave Audio Files', '*.wav')])
+   if file:
+      filepath = os.path.abspath(file.name)
+      Label(my_doc, text="The File is located at : " + str(filepath), font=('Aerial 11')).pack()
 
-button1 = tk.Button(my_doc, text='Upload File', width=20, command=lambda:upload_file())
-button1.grid(row=2, column=1)
+# Header
+label = Label(my_doc, text="Click the Button to browse the Files", font=('Georgia 13'))
+label.pack(pady=10)
+
+# Button
+ttk.Button(my_doc, text="Browse", command=upload_file).pack(pady=20)
 
 my_doc.mainloop()
